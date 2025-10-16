@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:
+
+# robots.txt for xxxxxxxxxx Sitemap
+#Sitemap: https://xxxxxxxxxx.com/sitemap.xml
