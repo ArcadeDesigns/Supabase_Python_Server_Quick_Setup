@@ -1,6 +1,6 @@
 # app.py
 import os
-from package import app, authentication
+from package import app, csrf, authentication, security
 from flask import jsonify, request, render_template, send_from_directory
 
 # ==============================
@@ -16,7 +16,9 @@ def home():
 # ==============================
 # 🧍‍♂️ Signup Route
 # ==============================
-@app.route("/api/signup", methods=["POST"])
+@app.route("/api/v1/auth/register", methods=["POST"])
+@csrf.exempt
+@security.Security
 def signup():
     payload = request.json
     result = authentication.sign_up(payload)
@@ -26,9 +28,12 @@ def signup():
 # ==============================
 # 🔐 Login Route
 # ==============================
-@app.route("/api/login", methods=["POST"])
+@app.route("/api/v1/auth/login", methods=["POST"])
+@csrf.exempt
+@security.Security
 def login():
     payload = request.json
+    print(payload)
     result = authentication.sign_in(payload)
     return jsonify(result), 200 if result["status"] == "success" else 400
 
@@ -36,7 +41,9 @@ def login():
 # ==============================
 # 🚪 Logout Route
 # ==============================
-@app.route("/api/logout", methods=["POST"])
+@app.route("/api/v1/auth/logout", methods=["POST"])
+@csrf.exempt
+@security.Security
 def logout():
     result = authentication.sign_out()
     return jsonify(result), 200 if result["status"] == "success" else 400
